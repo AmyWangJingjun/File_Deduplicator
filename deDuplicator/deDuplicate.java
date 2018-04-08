@@ -29,16 +29,16 @@ public class deDuplicate {
 	List<String> fileList = new ArrayList<>();
 	String folderName;
 	final String MAPNAME = "COMPACTMAP";
-	
+
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		deDuplicate newIns = new deDuplicate();
-		newIns.intoLocker("/Users/Iris/study/504/testFolder/");
-		newIns.recover("test1_copy");
+//				newIns.intoLocker("/Users/Iris/study/504/testFolder/");
+				newIns.recoverFile("test1_copy 2");
 	} 
 
 	public deDuplicate() {
 		heads.put("\n", new ListNode("\n"));
-		folderName = "";
+		folderName = "/Users/Iris/study/504/testFolder/";
 	}
 
 	public void intoLocker(String folder) throws IOException {
@@ -49,11 +49,33 @@ public class deDuplicate {
 		storeBinaryFile();
 	}
 
-	public void recover(String fileName) throws IOException, ClassNotFoundException {
-		Path fileLocation = Paths.get(folderName + fileName);
+	public void recoverFile(String fileName) throws ClassNotFoundException, IOException {
+		recoverMap();
+		fileName = folderName + fileName;
+		FileReader file = new FileReader(fileName);
+		BufferedReader bufferedreader = new BufferedReader(file);
+		String line = null;
+		String result = "";
+		while ((line = bufferedreader.readLine()) != null) {
+			for (String word : line.split(" ")) {
+				word = word + " ";
+				if (heads.containsKey(word)) {
+					ListNode cur = heads.get(word);
+					while(cur != null) {
+						result += cur.value;
+						cur = cur.next;
+					}
+				}
+			}
+		}
+		WriteStringToFile(result, fileName);	
+	}
+
+	private void recoverMap() throws IOException, ClassNotFoundException {
+		Path fileLocation = Paths.get(folderName + MAPNAME);
 		byte[] data = Files.readAllBytes(fileLocation);
-		DataNode head = (DataNode)recoverObject(data);
-		recovertoFile(head, folderName +fileName);
+		heads = (Map<String, ListNode>) recoverObject(data);
+		//		recovertoFile(head, folderName +fileName);
 	}
 
 	private Object recoverObject(byte[] data) throws IOException, ClassNotFoundException {
@@ -76,9 +98,7 @@ public class deDuplicate {
 
 	private void toFileList(File folder) {
 		for (File fileEntry : folder.listFiles()) {
-			if (fileEntry.isDirectory()) {
-				toFileList(fileEntry);
-			} else {
+			if (!fileEntry.isDirectory()) {
 				String fileName = fileEntry.getName();
 				fileList.add(fileName);
 			}
@@ -104,15 +124,13 @@ public class deDuplicate {
 			}
 		}
 		//store hashmap to disk
-		System.out.println(heads.size());
 		writeBinaryFile(heads, folderName + MAPNAME);
 	}
 
 	private void storeBinaryFile() throws IOException{
 		for (String fileName : fileList) {
 			fileName = folderName + fileName;
-			DataNode compiled = compacting(fileName);
-			writeBinaryFile(compiled, fileName);	
+			compacting(fileName);
 		}		
 	}
 
@@ -147,46 +165,46 @@ public class deDuplicate {
 		return result;
 	}
 
-	public DataNode compacting(String filename) throws IOException {
-		System.out.println(filename);
+	//	public DataNode compacting(String filename) throws IOException {
+	//		System.out.println(filename);
+	//		FileReader file = new FileReader(filename);
+	//		BufferedReader bufferedreader = new BufferedReader(file);
+	//		String line = null;
+	//		DataNode dummyHead = new DataNode();
+	//		DataNode prev = dummyHead;
+	//		while ((line = bufferedreader.readLine()) != null) {
+	//			for (String word : line.split(" ")) {
+	//				word = word + " ";
+	//				if (heads.containsKey(word)) {
+	//					DataNode newNode = new DataNode(heads.get(word));
+	//					prev.next = newNode;
+	//					prev = newNode;
+	//				}
+	//			}
+	//			prev = addSymbol(prev, "\n");
+	//		}
+	//		return dummyHead.next;
+	//	}
+	public void compacting(String filename) throws IOException {
 		FileReader file = new FileReader(filename);
 		BufferedReader bufferedreader = new BufferedReader(file);
 		String line = null;
-		DataNode dummyHead = new DataNode();
-		DataNode prev = dummyHead;
+		String result = "";
 		while ((line = bufferedreader.readLine()) != null) {
 			for (String word : line.split(" ")) {
 				word = word + " ";
 				if (heads.containsKey(word)) {
-					DataNode newNode = new DataNode(heads.get(word));
-					prev.next = newNode;
-					prev = newNode;
+					result += word;
 				}
 			}
-			prev = addSymbol(prev, "\n");
 		}
-		return dummyHead.next;
-	}
-
-	public void recovertoFile(DataNode head, String fileName) throws IOException {
-		String result = new String();
-		DataNode cur = head;
-		while(cur != null) {
-			ListNode node = cur.value;
-			while(node != null) {
-				result += node.value;
-				node = node.next;
-			}
-			cur = cur.next;
-		}
-		WriteStringToFile(result, fileName);
+		WriteStringToFile(result, filename);
 	}
 
 	private void WriteStringToFile(String result, String fileName) throws IOException {
 		BufferedWriter out = new BufferedWriter(new FileWriter(fileName));
 		try {
-			out.write(result);  //Replace with the string 
-			//you are trying to write
+			out.write(result);  
 		}
 		catch (IOException e)
 		{
@@ -199,12 +217,6 @@ public class deDuplicate {
 		}
 	}
 
-	public DataNode addSymbol(DataNode prev, String symbol) {
-		DataNode comma = new DataNode(heads.get("symbol"));
-		prev.next = comma;
-		prev = comma;
-		return comma;
-	}
 
 	// fundamental method to de-duplicate using two hash maps and doubly linked list
 	public void go(String words) {

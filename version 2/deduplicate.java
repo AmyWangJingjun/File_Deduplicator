@@ -31,7 +31,7 @@ public class deduplicate {
 		deduplicate newIns = new deduplicate("/Users/Iris/study/504/testFolder/");
 		newIns.toFileList("/Users/Iris/study/504/testFolder/");
 
-		newIns.toCompact();
+//		newIns.toCompact();
 		newIns.recover("test1_copy_3");
 	}
 
@@ -57,7 +57,7 @@ public class deduplicate {
 			while ((line = bufferedreader.readLine()) != null) {
 				String[] split = line.split(" ");
 				for (String index : split) {
-					if (!index.equals(" ")) {
+					if (!(index.equals(" ") || index.equals(""))) {
 						result += ReadCompactFile(index) + "\n";
 					}
 				}

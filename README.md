@@ -16,9 +16,14 @@ Second version:
 
 In this version we use a simpler idea, that is put each paragraph into a hash map, if it is unique, then we write this paragragh to the complie folder, and replace this paragraph with the name of the new file. If this paragraph is already in the map before, we just get the file name of this paragraph, and replace it. So if the files in the folder are nearly the same, it will reduce a lot of storage.
 file before goes into the locker:(two 1M txt file)
+
 <img src="https://github.com/AmyWangJingjun/File_Deduplicator/blob/master/version%202/ScreenShots/Screen%20Shot%202018-04-08%20at%207.53.30%20PM.png" width = "375" height = "273" alt="Laptop" align=center />
+
 file after being locked:(reduced to 10kB each file, and a folder of 505kB, which is reduced to 525 kB in total)
+
 <img src="https://github.com/AmyWangJingjun/File_Deduplicator/blob/master/version%202/ScreenShots/Screen%20Shot%202018-04-08%20at%207.53.14%20PM.png" width = "375" height = "273" alt="Laptop" align=center />
+
 file recovered:(back to 1M and same to the original one)
+
 <img src="https://github.com/AmyWangJingjun/File_Deduplicator/blob/master/version%202/ScreenShots/Screen%20Shot%202018-04-08%20at%208.40.48%20PM.png" width = "375" height = "273" alt="Laptop" align=center />
 

@@ -15,7 +15,7 @@ problem :
 
 Second version:
 
-In this version we use a simpler idea, that is put each paragraph into a hash map, if it is unique, then we write this paragragh to the complie folder, and replace this paragraph with the name of the new file. If this paragraph is already in the map before, we just get the file name of this paragraph, and replace it. So if the files in the folder are nearly the same, it will reduce a lot of storage.
+In this version we use a simpler idea, that is go through all the paragraphs of each file, put each them into a hashmap, whose key is the hash value of each paragragh, and value is the name of a new file, which contains continent of this paragraph. Then we rewrite the original file with names of the new created "paragraph file". So if the files in the folder are nearly the same, it will reduce a lot of storage.
 
 File before goes into the locker:(two 1M txt file)
 

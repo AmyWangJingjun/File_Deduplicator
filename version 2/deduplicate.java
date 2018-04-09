@@ -29,21 +29,46 @@ public class deduplicate {
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		deduplicate newIns = new deduplicate("/Users/Iris/study/504/testFolder/");
-		newIns.toFileList("/Users/Iris/study/504/testFolder/");
+		// here need to replace folder name to a local one
+		/**Notice: 
+		 * Need to make a new directory called "COMPACTFOLDER/" in the folder that need to be deduplicates.
+		 * To implement the duplicator, use "toCompact()" function to deduplicates the files
+		 * To recover a file, run the "recover(_)" function, to recover a file that has been compiled before.
+		 **/
 
-//		newIns.toCompact();
-		newIns.recover("test1_copy_3");
+				newIns.toCompact();
+		//		newIns.recover("test1_copy_3");
 	}
 
-	private void toFileList(String FOLDER) {
-		folderName = FOLDER;
-		File f = new File(folderName);
-		for (File fileEntry : f.listFiles()) {
-			if (!fileEntry.isDirectory()) {
-				String fileName = fileEntry.getName();
-				System.out.println(fileName);
-				fileList.add(fileName);
+	public void toCompact() throws IOException {
+		toFileList();
+		for (String fileName : fileList) {
+			String chunckIndex = " ";
+			try {		
+				fileName = folderName + fileName;
+				FileReader file = new FileReader(fileName);
+				BufferedReader bufferedreader = new BufferedReader(file);
+				String line = null;
+				while ((line = bufferedreader.readLine()) != null) {
+					if (chunckMap.containsKey(line)) {
+						chunckIndex += chunckMap.get(line) + " ";
+					} else {
+						String cName = Integer.toString(counter++);
+						chunckMap.put(line, cName);
+						WriteStringToFile(line, COMPACTFOLDERNAME + cName);
+						chunckIndex += cName + " ";
+					}
+				}	
+
 			}
+			catch(FileNotFoundException ex) {
+				System.out.println("Unable to open file '" + fileName + "'");                
+			}
+			catch(IOException ex) {
+				System.out.println("Error reading file '" + fileName + "'");                  
+			}
+			WriteStringToFile(chunckIndex, fileName);
+
 		}
 	}
 
@@ -74,6 +99,20 @@ public class deduplicate {
 	}
 
 
+	private void toFileList() {
+		File f = new File(folderName);
+		for (File fileEntry : f.listFiles()) {
+			if (!fileEntry.isDirectory()) {
+				String fileName = fileEntry.getName();
+				System.out.println(fileName);
+				fileList.add(fileName);
+			}
+		}
+	}
+
+
+
+
 	private String ReadCompactFile(String index) {
 		String result = " ";
 		String fileName = COMPACTFOLDERNAME + index;
@@ -95,36 +134,6 @@ public class deduplicate {
 		return result;
 	}
 
-	private void toCompact() throws IOException {		
-		for (String fileName : fileList) {
-			String chunckIndex = " ";
-			try {		
-				fileName = folderName + fileName;
-				FileReader file = new FileReader(fileName);
-				BufferedReader bufferedreader = new BufferedReader(file);
-				String line = null;
-				while ((line = bufferedreader.readLine()) != null) {
-					if (chunckMap.containsKey(line)) {
-						chunckIndex += chunckMap.get(line) + " ";
-					} else {
-						String cName = Integer.toString(counter++);
-						chunckMap.put(line, cName);
-						WriteStringToFile(line, COMPACTFOLDERNAME + cName);
-						chunckIndex += cName + " ";
-					}
-				}	
-
-			}
-			catch(FileNotFoundException ex) {
-				System.out.println("Unable to open file '" + fileName + "'");                
-			}
-			catch(IOException ex) {
-				System.out.println("Error reading file '" + fileName + "'");                  
-			}
-			WriteStringToFile(chunckIndex, fileName);
-
-		}
-	}
 
 	private void WriteStringToFile(String result, String fileName) throws IOException {
 		BufferedWriter out = new BufferedWriter(new FileWriter(fileName));

@@ -1,5 +1,6 @@
 # File_Deduplicator
 EC504 course project
+
 First Version:
 
 i. Implement hashing method to go over all the files in the folder. Using a doubly linked list to represent the relationship between each words. Completed to produce a hashmap which  which stores all the unique segments of all the files. The key is the first word of the segment, and value is the linked list represents the segment. We call this map “head_map”. 

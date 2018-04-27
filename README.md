@@ -6,8 +6,8 @@ EC504 course project
 ### Version 2.1
 - Fixed the bug that the recovered file does not match the original file.
 - Programmed a sever can transfer files.
-  $ nc 127.0.0.1 9527 >> "Directory_Where_You_Want_TO_Store_The_Downloaded_File"
-  $ "File_Name_You_Want_To_Download_From_The_Server"
+    $ nc 127.0.0.1 9527 >> "Directory_Where_You_Want_TO_Store_The_Downloaded_File"
+    $ "File_Name_You_Want_To_Download_From_The_Server"
 
 First Version:
 

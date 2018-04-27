@@ -40,9 +40,9 @@ File recovered:(back to 1M and same to the original one)
 
 Storage used before compile:
 
-<img src="https://github.com/AmyWangJingjun/File_Deduplicator/blob/master/version%202/ScreenShots/Screen%20Shot%202018-04-08%20at%209.13.12%20PM.png" width = "375" height = "273" alt="Laptop" align=center />
+<img src="https://github.com/AmyWangJingjun/File_Deduplicator/blob/master/version%202/ScreenShots/Screen%20Shot%202018-04-08%20at%209.13.12%20PM.png" height = "273" alt="Laptop" align=center />
 
 Storage used after complie:
 
-<img src="https://github.com/AmyWangJingjun/File_Deduplicator/blob/master/version%202/ScreenShots/Screen%20Shot%202018-04-08%20at%209.13.48%20PM.png" width = "375" height = "273" alt="Laptop" align=center />
+<img src="https://github.com/AmyWangJingjun/File_Deduplicator/blob/master/version%202/ScreenShots/Screen%20Shot%202018-04-08%20at%209.13.48%20PM.png" height = "273" alt="Laptop" align=center />
 

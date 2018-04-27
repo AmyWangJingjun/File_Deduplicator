@@ -1,6 +1,14 @@
 # File_Deduplicator
 EC504 course project
 
+
+## Changelog
+### Version 2.1
+- Fixed the bug that the recovered file does not match the original file.
+- Programmed a sever can transfer files.
+  $ nc 127.0.0.1 9527 >> "Directory_Where_You_Want_TO_Store_The_Downloaded_File"
+  $ "File_Name_You_Want_To_Download_From_The_Server"
+
 First Version:
 
 i. Implement hashing method to go over all the files in the folder. Using a doubly linked list to represent the relationship between each words. Completed to produce a hashmap which  which stores all the unique segments of all the files. The key is the first word of the segment, and value is the linked list represents the segment. We call this map “head_map”. 

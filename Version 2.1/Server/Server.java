@@ -15,7 +15,7 @@ public class Server {
 			System.out.println("Waiting for connection...");
 			client = server.accept();
 			System.out.println("Accepted connection : " + client);
-			new Handler(client).start();;
+			new Handler(client).start();
 		}
 	}
 }

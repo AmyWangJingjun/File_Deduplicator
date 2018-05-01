@@ -21,11 +21,11 @@ public class Entrance{
 		if (args[0].equals("addfile")) {
 			newIns.newLock = 0;
 			newIns.stats = 0;
-		} else if (args[0].equals("Retrieve")){
+		} else if (args[0].equals("retrieve")){
 			newIns.newLock = -1;
 			newIns.stats = 1;
 		} else if (args[0].equals("setnewlocker")) {
-			newIns.newLock = 0;
+			newIns.newLock = 1;
 			newIns.stats = 0;
 		}
 		else {
@@ -39,8 +39,11 @@ public class Entrance{
 			throw new IllegalArgumentException("File " +args[2] + "does not exist!");	
 		} 
 		if (newIns.stats == 1 && !inputDir.exists()) {
-			inputDir.mkdir();
-			System.out.println("new Folder " + args[2] + " made.");
+			if (args[2].charAt(args[2].length() - 1) == '/') {
+				inputDir.mkdir();
+				System.out.println("new Folder " + args[2] + " made.");
+			}			
+			
 		}
 		if (!args[3].equals("-lock")) {
 			throw new IllegalArgumentException("Please input -lock <lockerpath>!");
@@ -53,36 +56,30 @@ public class Entrance{
 			} else {
 				lockDir.mkdir();
 				System.out.println("Putting file " + args[2] + "into new locker " + args[4] + "...");
-			}		
-		} else if (newIns.newLock == 0) {
-			if (!lockDir.exists()) {
+			}
+			newIns.outputfile = args[4];
+		} else if (newIns.newLock == 0 && newIns.stats == 0) {
+			if (!lockDir.exists() || !lockDir.isDirectory()) {
 				throw new  IllegalArgumentException(args[4] + "  is not a locker");
-			} 
+			}
 			lockDir = new File(args[4] + "tmp/CP.SPLITER");			
 			if (!lockDir.exists()) {
 				throw new IllegalArgumentException("Not a valid locker!");
 			}
-		}
-		if (newIns.newLock == 0 && newIns.stats == 0) {
+			newIns.outputfile = args[4];
 			System.out.println("Putting file " + args[2] + "into existing locker " + args[4] + "...");
-		}
-
-		if (newIns.stats == 1) {
-			if (args.length < 6) {
-				throw new IllegalArgumentException("Please input file name you want to retrieve!");
-			} else if (!(args[5].equals("all") || new File(args[4] + args[5]).exists())) {
-				throw new IllegalArgumentException("File does not exist");
+		}else if (newIns.stats == 1) {
+			if (!lockDir.exists() || lockDir.isDirectory()|| !(new File(lockDir.getParent() + "/tmp/CP.SPLITER")).exists() ) {
+				throw new  IllegalArgumentException(args[4] + "  is not a file existing in locker");
 			}
-		}
-		
-		newIns.inputfile = args[2];
-		newIns.outputfile = args[4];
-		
+			newIns.outputfile = lockDir.getParent() + "/";
+		}		
+		newIns.inputfile = args[2];		
 		Zip_Lib lib = new Zip_Lib(newIns.inputfile, newIns.outputfile);
 		if (newIns.stats == 0) {
 			lib.toCompact(newIns.newLock);
 		} if (newIns.stats == 1) {
-			lib.recover(args[5]);
+			lib.recover((new File(args[4])).getName());
 		}
 	}
 }

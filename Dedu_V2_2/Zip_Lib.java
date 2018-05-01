@@ -44,12 +44,17 @@ public class Zip_Lib {
 			toFileList(COMPRESSED);
 			List<String> tmplist = fileList;
 			fileList = new ArrayList<>();
+			int max = 0;
 			for (String file : tmplist) {
 				if (!file.equals("CP.SPLITER")) {
 					String cur = new String(Files.readAllBytes(Paths.get(COMPRESSED + file)), StandardCharsets.UTF_8);
 					chunckMap.put(cur, file);
+					if (Integer.valueOf(file) > max) {
+						max = Integer.valueOf(file);
+					}
 				}
 			}
+			counter = max + 1;//reset the counter
 		} 
 		if ((new File(TargetDir)).isDirectory()) {
 			// input is a folder
@@ -68,37 +73,29 @@ public class Zip_Lib {
 
 	public void recover(String mode) throws IOException {
 		System.out.println("Decompressed files: ");
-		BufferedReader bufferedreader = null;
-		if (mode.equals("all")) {
-			toFileList(LockerDir);
-			for (String fileName : fileList) {
-				deCompressed (LockerDir + fileName);
-			}
-		} else {
-			deCompressed (LockerDir + mode);
-		}
+		deCompressed (mode);
 	}
-	
+
 	private void deCompressed (String fileName) throws IOException {
 		String originFile = null;
 		if ((new File(TargetDir)).isDirectory()) {
-			originFile = TargetDir + (new File(fileName)).getName();
+			originFile = TargetDir + fileName;
 		} else {
 			originFile = TargetDir;
 		}					
-			FileReader file = new FileReader(fileName);
-			BufferedReader bufferedreader = new BufferedReader(file);
-			String line = null;			
-			String result = "";
-			while ((line = bufferedreader.readLine()) != null) {
-				String[] split = line.split(" ");
-				for (String index : split) {
-					if (!(index.equals(" ") || index.equals(""))) {
-						result += ReadCompactFile(index);
-					}
+		FileReader file = new FileReader(LockerDir + fileName);
+		BufferedReader bufferedreader = new BufferedReader(file);
+		String line = null;			
+		String result = "";
+		while ((line = bufferedreader.readLine()) != null) {
+			String[] split = line.split(" ");
+			for (String index : split) {
+				if (!(index.equals(" ") || index.equals(""))) {
+					result += ReadCompactFile(index);
 				}
 			}
-			WriteStringToFile(result, originFile);
+		}
+		WriteStringToFile(result, originFile);
 		System.out.println("Successfully retrieve file " + fileName);
 	}
 
@@ -153,7 +150,7 @@ public class Zip_Lib {
 			}
 		}
 		WriteStringToFile(chunckIndex,outputFile );
-		
+
 	}
 
 
@@ -174,15 +171,19 @@ public class Zip_Lib {
 	}
 
 	private String findMostFreq() {
-		String result = null;
+		long max = 1;
+		String last_opt = ".";
 		for (Entry<String, Long> entry: tokenMap.entrySet()) {
+			if (entry.getValue() > max) {
+				max = entry.getValue();
+				last_opt = entry.getKey();
+			}
 			if (entry.getValue() > 100 && entry.getValue() < 1000) {
 				System.out.println(entry.getValue());
-				result = entry.getKey();
-				break;
-			}
+				return entry.getKey();
+			} 
 		}
-		return result;
+		return last_opt;
 	}
 
 	public String displayStorage(String dir) {
@@ -191,37 +192,37 @@ public class Zip_Lib {
 		double lengthInByte = folderSize(f);
 		double lengthInKB = (double)lengthInByte / 1024;
 		double lengthInMB = (double)lengthInKB / 1024;
-		System.out.println(lengthInMB);
 		if (lengthInMB > 1) {
 			String MB = String.format("Current locker storage use is %.2f MB.", lengthInMB);
+			System.out.println(MB);
 			return MB;
 		} else if (lengthInKB > 1) {
 			String KB = String.format("Current locker storage use is %.2f KB.", lengthInKB);
+			System.out.println(KB);
 			return KB;
 		} else {
-			String Bt = String.format("Current locker storage use is %f Bytes.", lengthInKB);;
+			String Bt = String.format("Current locker storage use is %f Bytes.", lengthInKB);
+			System.out.println(Bt);
 			return Bt;
 		}
 	}
 	public static long folderSize(File directory) {
 		long length = 0;
 		for (File file : directory.listFiles()) {
-			if (file.isFile())
-				length += file.length();
-			else
+			if (file.isDirectory())
 				length += folderSize(file);
+
+			else
+				length += file.length();
 		}
 		return length;
 	}
-
-
 
 	private void toFileList(String curDir) {
 		File f = new File(curDir);
 		for (File fileEntry : f.listFiles()) {
 			if (!fileEntry.isDirectory()) {
 				String fileName = fileEntry.getName();
-				System.out.println(fileName);
 				if (fileName.charAt(0) != '.') {
 					fileList.add(fileName);
 				}				
@@ -230,26 +231,30 @@ public class Zip_Lib {
 	}
 
 
-
-
 	private String ReadCompactFile(String index) {
 		String result = "";
 		String fileName = COMPRESSED + index;
-		BufferedReader bufferedreader = null;
-		try {					
-			FileReader file = new FileReader(fileName);
-			bufferedreader = new BufferedReader(file);
-			int c;
-			while ((c = bufferedreader.read()) != -1) {
-				result += (char) c;
-			}	
+		try {
+			result = new String(Files.readAllBytes(Paths.get(fileName)), StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		catch(FileNotFoundException ex) {
-			System.out.println("Unable to open file '" + fileName + "'");                
-		}
-		catch(IOException ex) {
-			System.out.println("Error reading file '" + fileName + "'");                  
-		}
+		//		BufferedReader bufferedreader = null;
+		//		try {					
+		//			FileReader file = new FileReader(fileName);
+		//			bufferedreader = new BufferedReader(file);
+		//			int c;
+		//			while ((c = bufferedreader.read()) != -1) {
+		//				result += (char) c;
+		//			}	
+		//		}
+		//		catch(FileNotFoundException ex) {
+		//			System.out.println("Unable to open file '" + fileName + "'");                
+		//		}
+		//		catch(IOException ex) {
+		//			System.out.println("Error reading file '" + fileName + "'");                  
+		//		}
 		return result;
 	}
 

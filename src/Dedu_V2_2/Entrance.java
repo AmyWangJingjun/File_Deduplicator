@@ -38,13 +38,16 @@ public class Entrance{
 		if (newIns.stats == 0 && !inputDir.exists()) {
 			throw new IllegalArgumentException("File " +args[2] + "does not exist!");	
 		} 
-		if (newIns.stats == 1 && !inputDir.exists()) {
-			if (args[2].charAt(args[2].length() - 1) == '/') {
-				inputDir.mkdir();
-				System.out.println("new Folder " + args[2] + " made.");
-			}			
-			
-		}
+//		if (newIns.stats == 1) {
+//			if (inputDir.isDirectory()) {
+//				
+//			}
+//			if (args[2].charAt(args[2].length() - 1) == '/') {
+//				inputDir.mkdir();
+//				System.out.println("new Folder " + args[2] + " made.");
+//			}			
+//			
+//		}
 		if (!args[3].equals("-lock")) {
 			throw new IllegalArgumentException("Please input -lock <lockerpath>!");
 		}

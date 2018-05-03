@@ -58,8 +58,8 @@ public class Zip_Lib {
 		} 
 		if ((new File(TargetDir)).isDirectory()) {
 			// input is a folder
-			toFileList(TargetDir);	
-			System.out.println(fileList);
+			toFileList(TargetDir);
+			TargetDir = TargetDir + "/";
 			for (int i = 0; i < fileList.size(); i++) {
 				getCompressed(fileList.get(i), flag, 1);
 				flag = 0;
@@ -79,7 +79,7 @@ public class Zip_Lib {
 	private void deCompressed (String fileName) throws IOException {
 		String originFile = null;
 		if ((new File(TargetDir)).isDirectory()) {
-			originFile = TargetDir + fileName;
+			originFile = TargetDir + "/" + fileName;
 		} else {
 			originFile = TargetDir;
 		}					
@@ -102,7 +102,7 @@ public class Zip_Lib {
 	private void getCompressed(String file, int flag, int mode) throws IOException {
 		String fileName = file;
 		String chunckIndex = "";
-		String outputFile = LockerDir + fileName;
+		String outputFile = LockerDir + "/" + fileName;
 		String inputFile = null;
 		if (mode == 1) {
 			inputFile = TargetDir + fileName;
@@ -118,7 +118,7 @@ public class Zip_Lib {
 		} else {
 			Spliter =  new String(Files.readAllBytes(Paths.get(COMPRESSED + "CP.SPLITER")), StandardCharsets.UTF_8);
 		}
-		System.out.println(Spliter);
+//		System.out.println(Spliter);
 		int len = Spliter.length();
 		String cName = null;
 		String substr = null;
@@ -179,7 +179,7 @@ public class Zip_Lib {
 				last_opt = entry.getKey();
 			}
 			if (entry.getValue() > 100 && entry.getValue() < 1000) {
-				System.out.println(entry.getValue());
+//				System.out.println(entry.getValue());
 				return entry.getKey();
 			} 
 		}
@@ -187,21 +187,21 @@ public class Zip_Lib {
 	}
 
 	public String displayStorage(String dir) {
-		System.out.println(dir);
+//		System.out.println(dir);
 		File f = new File(dir);
 		double lengthInByte = folderSize(f);
 		double lengthInKB = (double)lengthInByte / 1024;
 		double lengthInMB = (double)lengthInKB / 1024;
 		if (lengthInMB > 1) {
-			String MB = String.format("Current locker storage use is %.2f MB.", lengthInMB);
+			String MB = String.format("Locker storage is %.2f MB. \n", lengthInMB);
 			System.out.println(MB);
 			return MB;
 		} else if (lengthInKB > 1) {
-			String KB = String.format("Current locker storage use is %.2f KB.", lengthInKB);
+			String KB = String.format("Locker storage is %.2f KB.\n", lengthInKB);
 			System.out.println(KB);
 			return KB;
 		} else {
-			String Bt = String.format("Current locker storage use is %f Bytes.", lengthInKB);
+			String Bt = String.format("Locker storage is %f Bytes.\n", lengthInKB);
 			System.out.println(Bt);
 			return Bt;
 		}

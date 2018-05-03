@@ -7,8 +7,14 @@ EC504 course project
 - Fixed the bug that the recovered file does not match the original file.
 - Programmed a sever can transfer files.
 
-        $ nc "HOST_IP" 9527 >> "Directory_Where_You_Want_TO_Store_The_Downloaded_File"
-        $ "File_Name_You_Want_To_Download_From_The_Server"
+        $ java -jar Client.java HOST_IP
+        $ addile -file FILE_DIR -lock LOCKER_DIR
+        $ retrieve -file WHERE_YOU_WANT_RETRIEVE_THE_FILE -lock FILE_DIR_IN_LOCKER
+        
+        /* Example:
+        $ addile -file /User/USERNAME/Desktop/test.txt -lock A
+        $ retrieve -file /User/USERNAME/Desktop/ -lock A/test.txt
+        */
 
 First Version:
 

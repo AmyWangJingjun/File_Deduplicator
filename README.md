@@ -1,6 +1,31 @@
 # File_Deduplicator
 EC504 course project
 
+## Usage
+### Command Line Interface
+        $ java -jar Entrance.jar setnewlocker -file FILE_DIR -lock LOCKER_DIR
+        $ java -jar Entrance.jar addfile -file FILE_DIR -lock LOCKER_DIR
+        $ java -jar Entrance.jar retrieve -file WHERE_YOU_WANT_RETRIEVE_THE_FILE -lock FILE_DIR_IN_LOCKER
+        
+        /* Example:
+        $ java -jar Entrance.jar setnewlocker -file /Users/USERNAME/Desktop/upload/file6.txt -lock \
+        /Users/USERNAME/Desktop/Locker/C/
+        $ java -jar Entrance.jar addfile -file /Users/USERNAME/Desktop/upload/file7.txt -lock \
+        /Users/USERNAME/Desktop/Locker/C/
+        $ java -jar Entrance.jar retrieve -file /Users/USERNAME/Desktop/ -lock \
+        /Users/USERNAME/Desktop/Locker/C/file6.txt
+        */
+### Network Access Command Line Interface
+
+        $ java -jar Client.java HOST_IP
+        $ addile -file FILE_DIR -lock LOCKER_DIR
+        $ retrieve -file WHERE_YOU_WANT_RETRIEVE_THE_FILE -lock FILE_DIR_IN_LOCKER
+        
+        /* Example:
+        $ addile -file /User/USERNAME/Desktop/test.txt -lock A
+        $ retrieve -file /User/USERNAME/Desktop/ -lock A/test.txt
+        */
+### GUI
 
 ## Changelog
 ### Version 2.1

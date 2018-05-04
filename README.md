@@ -22,6 +22,7 @@ EC504 course project
         $ retrieve -file WHERE_YOU_WANT_RETRIEVE_THE_FILE -lock FILE_DIR_IN_LOCKER
         
         /* Example:
+        $ java -jar Client.java 127.0.0.1
         $ addile -file /User/USERNAME/Desktop/test.txt -lock A
         $ retrieve -file /User/USERNAME/Desktop/ -lock A/test.txt
         */

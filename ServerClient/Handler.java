@@ -15,8 +15,10 @@ import java.net.Socket;
 
 public class Handler extends Thread {
 	private Socket client;
-	private final static String LOCKER = "/Users/jiahaozhao/Desktop/Locker/";
-	private final static String FOLDER_FOR_SENDING = "/Users/jiahaozhao/Desktop/Locker/tmp/";  
+	
+	//Change the two directories to your own directories!!!
+	//private final static String LOCKER = "/Users/jiahaozhao/Desktop/Locker/";
+	//private final static String FOLDER_FOR_SENDING = "/Users/jiahaozhao/Desktop/Locker/tmp/";  
 	
 	public Handler(Socket client) {
 		this.client = client;

@@ -156,7 +156,7 @@ public class Zip_Lib {
 
 	private String setSpliter(String filename) throws IOException {
 		String fileContents =  new String(Files.readAllBytes(Paths.get(filename)), StandardCharsets.UTF_8);
-		StringTokenizer tokenizer = new StringTokenizer(fileContents);
+		StringTokenizer tokenizer = new StringTokenizer(fileContents, " ");
 		while(tokenizer.hasMoreTokens()) {
 			String cur = tokenizer.nextToken();
 			if (tokenMap.containsKey(cur)) {
@@ -165,7 +165,7 @@ public class Zip_Lib {
 				tokenMap.put(cur, (long) 1);
 			}
 		}
-		String result =  findMostFreq();
+		String result = " " + findMostFreq() + " ";
 		WriteStringToFile(result, COMPRESSED + "CP.SPLITER" );
 		return result;
 	}
@@ -178,11 +178,13 @@ public class Zip_Lib {
 				max = entry.getValue();
 				last_opt = entry.getKey();
 			}
-			if (entry.getValue() > 100 && entry.getValue() < 1000) {
-//				System.out.println(entry.getValue());
+			if (entry.getValue() > 200 && entry.getValue() < 1000) {
+				
+				System.out.println(entry.getValue());
 				return entry.getKey();
 			} 
 		}
+		System.out.println("worstcase");
 		return last_opt;
 	}
 

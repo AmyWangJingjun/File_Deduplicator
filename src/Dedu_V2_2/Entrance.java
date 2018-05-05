@@ -80,9 +80,20 @@ public class Entrance{
 		newIns.inputfile = args[2];		
 		Zip_Lib lib = new Zip_Lib(newIns.inputfile, newIns.outputfile);
 		if (newIns.stats == 0) {
+			double t1 = System.nanoTime();
 			lib.toCompact(newIns.newLock);
+			double t2 = System.nanoTime();
+			System.out.println(t2 - t1);
+			//2.214386471E9
+			//1.94424145E8
+
 		} if (newIns.stats == 1) {
+			double t3 = System.nanoTime();
 			lib.recover((new File(args[4])).getName());
+			double t4 = System.nanoTime();
+			System.out.println(t4 - t3);
+//			9.411701226E9
+//			9.168170264E9			
 		}
 	}
 }

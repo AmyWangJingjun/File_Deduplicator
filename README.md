@@ -1,6 +1,8 @@
 # File_Deduplicator
 EC504 course project
 
+All the code needed are in src folder.
+
 ## Usage
 ### Command Line Interface
         $ java -jar Entrance.jar setnewlocker -file FILE_OR_FOLDER_DIR -lock LOCKER_DIR
@@ -31,6 +33,13 @@ EC504 course project
 ### GUI
 
 ## Changelog
+
+### Version 2.2
+- Implement customized token splitter.
+- Fixed the bug between server-client file transfer
+- Implement GUI
+- Able to zip and unzip file in one click
+
 ### Version 2.1
 - Fixed the bug that the recovered file does not match the original file.
 - Programmed a sever can transfer files.
